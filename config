@@ -114,7 +114,7 @@ for_window [class="R_x11"] floating enable move right 330px,move down 70px
 for_window [class="matplotlib"] floating enable move right 485px,move up 185px
 
 # kill special windows
-bindsym $mod+control+z [class="R_x11|matplotlib"] kill
+bindsym $mod+x [class="R_x11|matplotlib"] kill
 
 ## init exec
 exec --no-startup-id fcitx					#input method
