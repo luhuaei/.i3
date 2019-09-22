@@ -94,6 +94,7 @@ bar {
         status_command i3blocks
 	position top
 	modifier $mod
+	separator_symbol "|"
 }
 
 
@@ -101,6 +102,8 @@ bar {
 new_window None
 hide_edge_borders smart
 focus_follows_mouse no
+workspace_auto_back_and_forth yes
+focus_wrapping no
 no_focus [class="R_x11|matplotlib"]
 
 # assign
@@ -112,6 +115,8 @@ assign [class="Wine" instance="tim.exe"] 10
 ## float
 for_window [class="R_x11"] floating enable move right 330px,move down 70px
 for_window [class="matplotlib"] floating enable move right 485px,move up 185px
+for_window [class="Chromium"] focus child, layout tabbed, focus
+for_window [class="Xfce4-appfinder"] floating enable resize set 900 600
 
 # kill special windows
 bindsym $mod+x [class="R_x11|matplotlib"] kill
@@ -127,23 +132,26 @@ exec --no-startup-id xfce4-power-manager 			#power icon
 exec --no-startup-id nitrogen --restore; sleep 1; compton -b	#wallpaper
 exec --no-startup-id xautolock -time 10 -locker blurlock	#lock
 exec --no-startup-id blueman-applet				#blueman
+exec --no-startup-id xfsettingsd				#xfce4 gsd (open wine application)
 
 ## bindsym
 bindsym $mod+Shift+space move scratchpad
-bindsym $mod+space scratchpad show resize set 900 600
+bindsym $mod+space scratchpad show
 bindsym $mod+g exec chromium
 bindsym $mod+i exec emacs
+bindsym $mod+Mod1+i exec proxychains emacs
 bindsym $mod+t exec pcmanfm
-bindsym $mod+Print --release exec --no-startup-id i3-scrot -w 5
-bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s 5
-bindsym $mod+a exec anki
-
+bindsym $mod+Print --release exec --no-startup-id xfce4-screenshooter -c -d 2 -r -m
+bindsym $mod+Mod1+Print --release exec --no-startup-id xfce4-screenshooter -c -d 2 -w -m 
+bindsym $mod+b workspace back_and_forth
+bindsym $mod+a focus parent
 bindsym $mod+m bar mode toggle
-bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+z kill
-bindsym $mod+d exec dmenu_run
+bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+q kill
+bindsym $mod+d exec xfce4-appfinder
+bindsym $mod+Mod1+d exec xfce4-settings-manager
 
-bindsym $mod+q mode "$mode_system"
+bindsym $mod+z mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id blurlock, mode "default"
@@ -187,6 +195,12 @@ bindsym $mod+Shift+f floating toggle
 
 # wine
 bindsym $mod+Mod1+q exec ~/.scripts/tim.sh
-bindsym $mod+Mod1+e exec deepin-wine ~/wine/Office12/EXCEL.EXE
-bindsym $mod+Mod1+w exec deepin-wine ~/wine/Office12/WINWORD.EXE
-bindsym $mod+Mod1+p exec deepin-wine ~/wine/Office12/POWERPNT.EXE
+bindsym $mod+Mod1+c exec ~/.scripts/wechat.sh
+bindsym $mod+Mod1+e exec ~/.scripts/excel.sh
+bindsym $mod+Mod1+w exec ~/.scripts/word.sh
+bindsym $mod+Mod1+p exec ~/.scripts/ppt.sh
+
+#audio
+bindsym XF86AudioMute exec amixer set Master toggle
+bindsym XF86AudioLowerVolume exec amixer set Master 5%-
+bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
